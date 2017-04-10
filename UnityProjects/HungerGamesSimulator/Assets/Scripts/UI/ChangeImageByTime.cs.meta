@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: ae3e30f7389d8eb43af6db7745b984ac
+timeCreated: 1491836402
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - MorningSprite: {fileID: 21300000, guid: 4d0d9da18952309498a336b4164752c6, type: 3}
+  - NoonSprite: {fileID: 21300000, guid: b491caaa71e91944b870a0bd8d6bf059, type: 3}
+  - EveSprite: {fileID: 21300000, guid: 3acaa6b413fa8b941a8c21c8b33e447b, type: 3}
+  - NightSprite: {fileID: 21300000, guid: 0b8b4be0b825ac440aae8cda14b0a695, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
