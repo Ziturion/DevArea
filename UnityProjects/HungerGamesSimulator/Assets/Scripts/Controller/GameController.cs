@@ -49,7 +49,7 @@ public class GameController : Singleton<GameController>
 
     void OnGUI()
     {
-        if(GUI.Button(new Rect(5,35,120,35), "Give Player0 Item"))
+        if(GUI.Button(new Rect(5,505,120,35), "Give Player0 Item"))
         {
             PlayerController.Instance.GiveItemToPlayer(0, new FoodItem
             {
@@ -61,7 +61,7 @@ public class GameController : Singleton<GameController>
             });
         }
 
-        if (GUI.Button(new Rect(5, 75, 120, 35), "Take Player0 Item"))
+        if (GUI.Button(new Rect(5, 545, 120, 35), "Take Player0 Item"))
         {
             PlayerController.Instance.TakeItemToPlayer(0, new FoodItem
             {
@@ -71,6 +71,12 @@ public class GameController : Singleton<GameController>
                 FoodValue = 100,
                 Rarity = ItemRarity.Legendary
             });
+        }
+
+        if (GUI.Button(new Rect(5, 585, 120, 35), "Reset"))
+        {
+            PlayerController.Instance.RemoveAllPlayers();
+            PlayerController.Instance.Initilize();
         }
 
     }

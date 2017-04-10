@@ -31,7 +31,7 @@ public class ChangeImageByTime : MonoBehaviour
             case TimeController.TimeOfDay.Noon:
                 _changingImage.sprite = NoonSprite;
                 break;
-            case TimeController.TimeOfDay.Eve:
+            case TimeController.TimeOfDay.Evening:
                 _changingImage.sprite = EveSprite;
                 break;
             case TimeController.TimeOfDay.Night:

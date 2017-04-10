@@ -26,11 +26,11 @@ public class TimeController : Singleton<TimeController>
                     Debug.Log("Refreshed Time to Noon");
                 break;
             case TimeOfDay.Noon:
-                CurrentTime = TimeOfDay.Eve;
+                CurrentTime = TimeOfDay.Evening;
                 if (GameController.Instance.EnableDebug)
-                    Debug.Log("Refreshed Time to Eve");
+                    Debug.Log("Refreshed Time to Evening");
                 break;
-            case TimeOfDay.Eve:
+            case TimeOfDay.Evening:
                 CurrentTime = TimeOfDay.Night;
                 if (GameController.Instance.EnableDebug)
                     Debug.Log("Refreshed Time to Night");
@@ -75,7 +75,7 @@ public class TimeController : Singleton<TimeController>
     {
         Morning,
         Noon,
-        Eve,
+        Evening,
         Night
     }
 }

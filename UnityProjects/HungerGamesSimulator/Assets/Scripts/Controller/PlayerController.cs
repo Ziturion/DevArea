@@ -15,6 +15,9 @@ public class PlayerController : Singleton<PlayerController>
 	{
         AllPlayers = new List<Player>();
 	    GameController.Instance.Init += Initilize;
+	    TimeController.Instance.OnPostPhaseChanged += DeselectAllPlayers;
+	    TimeController.Instance.OnPostPhaseChanged += GlobalPlayerStatDecrease;
+	    TimeController.Instance.OnPostPhaseChanged += RefreshAllPlayers;
 	}
 
     public void ClickedOnPlayer(Player player)
@@ -58,30 +61,6 @@ public class PlayerController : Singleton<PlayerController>
         TakeItemToPlayer(AllPlayers[playerIndex], item);
     }
 
-    private void Initilize()
-    {
-        if (GameController.Instance.EnableDebug)
-            Debug.Log("Initilizing Players");
-        for (int i = 0; i < 16; i++)
-        {
-            AddPlayer();
-        }
-    }
-    private void DeselectAllPlayers()
-    {
-        foreach (Player player in AllPlayers)
-        {
-            player.ActiveImage.enabled = false;
-        }
-    }
-
-    private void AddPlayer()
-    {
-        Player player = Instantiate(PlayerPrefab, PlayerAnchor);
-        player.Initilize("Dummy", 100, 100, 100);
-        AllPlayers.Add(player);
-    }
-
     public void RemovePlayer(int index)
     {
         if (index < 0 || index > AllPlayers.Count)
@@ -89,18 +68,16 @@ public class PlayerController : Singleton<PlayerController>
 
         RemovePlayer(AllPlayers[index]);
     }
-
     public void RemovePlayer(string playerName)
     {
         RemovePlayer(AllPlayers.Find(t => t.PlayerName.text == playerName));
     }
-
     public void RemovePlayer(Player player)
     {
         if (!AllPlayers.Contains(player))
             return;
 
-        Destroy(player);
+        Destroy(player.gameObject);
         AllPlayers.Remove(player);
     }
 
@@ -108,8 +85,53 @@ public class PlayerController : Singleton<PlayerController>
     {
         foreach (Player player in AllPlayers)
         {
-            Destroy(player);
+            Destroy(player.gameObject);
         }
         AllPlayers.Clear();
     }
+
+    public void Initilize()
+    {
+        if (GameController.Instance.EnableDebug)
+            Debug.Log("Initilizing Players");
+        for (int i = 0; i < 16; i++)
+        {
+            AddPlayer("Dummy" + i);
+        }
+    }
+
+    private void DeselectAllPlayers()
+    {
+        foreach (Player player in AllPlayers)
+        {
+            player.ActiveImage.enabled = false;
+        }
+        InfoManager.Instance.ResetTexts();
+    }
+
+    private void RefreshAllPlayers()
+    {
+        foreach (Player player in AllPlayers)
+        {
+            player.Refresh();
+        }
+    }
+
+    private void GlobalPlayerStatDecrease()
+    {
+        for (int i = AllPlayers.Count - 1; i >= 0; i--)
+        {
+            AllPlayers[i].PhaseStatDecrease(TimeController.Instance.CurrentTime);
+        }
+    }
+
+    private void AddPlayer(string name = "Dummy", float health = 100, float hunger = 100, float thirst = 100)
+    {
+        Player player = Instantiate(PlayerPrefab, PlayerAnchor);
+        player.Initilize(name, health, hunger, thirst);
+        player.OnDeath += () => RemovePlayer(player);
+        AllPlayers.Add(player);
+    }
+
+
 }

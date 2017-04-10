@@ -1,5 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class Player : MonoBehaviour
 {
@@ -8,12 +11,77 @@ public class Player : MonoBehaviour
     public PlayerInventory Inventory;
     public Image ActiveImage;
 
+    public event Action OnDeath;
+
     public float MaxHealth { get; private set; }
     public float MaxHunger { get; private set; }
     public float MaxThirst { get; private set; }
-    public float Health { get; private set; }
-    public float Hunger { get; private set; }
-    public float Thirst { get; private set; }
+
+    private float _health;
+    private float _hunger;
+    private float _thirst;
+
+    private int _starvingPoints = 0;
+
+    public float Health
+    {
+        get { return _health; }
+        private set
+        {
+            if (value < 0)
+            {
+                _health = 0;
+                if(OnDeath != null)
+                    OnDeath.Invoke();
+                OnDeath = null;
+                return;
+            }
+            if (value > MaxHealth)
+            {
+                _health = MaxHealth;
+                return;
+            }
+            _health = value;
+        }
+    }
+    public float Hunger
+    {
+        get { return _hunger; }
+        private set
+        {
+            if (value < 0)
+            {
+                _hunger = 0;
+                _starvingPoints += Random.Range(1,6);
+                return;
+            }
+            if (value > MaxHunger)
+            {
+                _hunger = MaxHunger;
+                return;
+            }
+            _hunger = value;
+        }
+    }
+    public float Thirst
+    {
+        get { return _thirst; }
+        private set
+        {
+            if (value < 0)
+            {
+                _thirst = 0;
+                _starvingPoints += Random.Range(1,4);
+                return;
+            }
+            if (value > MaxThirst)
+            {
+                _thirst = MaxThirst;
+                return;
+            }
+            _thirst = value;
+        }
+    }
 
     public int Charisma { get; private set; }
     public int Strength { get; private set; }
@@ -38,6 +106,57 @@ public class Player : MonoBehaviour
         Inventory.RefreshIcons();
     }
 
+    public void Refresh()
+    {
+        HealthBar.value = Health / MaxHealth;
+        HungerBar.value = Hunger / MaxHunger;
+        ThirstBar.value = Thirst / MaxThirst;
+
+        if (GameController.Instance.DebugStats)
+        {
+            HealthBar.value = Charisma / 10f;
+            HungerBar.value = Strength / 10f;
+            ThirstBar.value = Intelligence / 10f;
+        }
+    }
+
+    public void OnClick()
+    {
+        PlayerController.Instance.ClickedOnPlayer(this);
+    }
+
+    public bool PhaseStatDecrease(TimeController.TimeOfDay phase)
+    {
+        switch (phase)
+        { 
+            case TimeController.TimeOfDay.Morning:
+                Hunger -= Strength > Intelligence ? 10 : 9; // -40 / -30
+                Thirst -= Strength > Intelligence ? 7 : 6; // -30 / -25
+                break;
+            case TimeController.TimeOfDay.Noon:
+                Hunger -= Strength > Intelligence ? 12 : 10;
+                Thirst -= Strength > Intelligence ? 10 : 8;
+                break;
+            case TimeController.TimeOfDay.Evening:
+                Hunger -= Strength > Intelligence ? 10 : 9;
+                Thirst -= Strength > Intelligence ? 7 : 6;
+                break;
+            case TimeController.TimeOfDay.Night:
+                Hunger -= Strength > Intelligence ? 8 : 7;
+                Thirst -= Strength > Intelligence ? 6 : 5;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException("phase", phase, null);
+        }
+
+        if (Hunger > 30 || Thirst > 40)
+            _starvingPoints = 0;
+
+        Health -= _starvingPoints;
+
+        return true;
+    }
+
     private static PlayerStats GenerateStats()
     {
         int statPoints = Random.Range(16, 24);
@@ -56,7 +175,7 @@ public class Player : MonoBehaviour
             primaryStatPoints++;
             statPoints--;
         }
-        return new PlayerStats(primaryStatPoints,secondaryStatPoints,lastStatpoints);
+        return new PlayerStats(primaryStatPoints, secondaryStatPoints, lastStatpoints);
     }
 
     private void SetStats()
@@ -64,28 +183,21 @@ public class Player : MonoBehaviour
         PlayerStats stats = GenerateStats();
         //Debug.Log(stats);
 
-        Charisma = stats.PrimaryStat;
-        Strength = stats.SecondaryStat;
-        Intelligence = stats.TertiarStat;
-    }
+        List<int> statList = new List<int> { stats.PrimaryStat, stats.SecondaryStat, stats.TertiarStat };
 
-    public void Refresh()
-    {
-        HealthBar.value = Health / MaxHealth;
-        HungerBar.value = Hunger / MaxHunger;
-        ThirstBar.value = Thirst / MaxThirst;
+        int picked = Random.Range(0, 3);
 
-        if (GameController.Instance.DebugStats)
-        {
-            HealthBar.value = Charisma / 10f;
-            HungerBar.value = Strength / 10f;
-            ThirstBar.value = Intelligence / 10f;
-        }
-    }
+        Charisma = statList[picked];
 
-    public void OnClick()
-    {
-        PlayerController.Instance.ClickedOnPlayer(this);
+        statList.RemoveAt(picked);
+
+        int picked2 = Random.Range(0, 2);
+
+        Strength = statList[picked2];
+
+        statList.RemoveAt(picked2);
+
+        Intelligence = statList[0];
     }
 
     private struct PlayerStats

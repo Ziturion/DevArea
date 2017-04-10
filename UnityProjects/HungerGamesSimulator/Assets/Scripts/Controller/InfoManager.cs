@@ -7,16 +7,21 @@ public class InfoManager : Singleton<InfoManager>
 
     void Start()
     {
-        MorningText.text = "";
-        NoonText.text = "";
-        EveText.text = "";
-        NightText.text = "";
+        ResetTexts();
     }
 
     public void RefreshPlayerInfo(Player player)
     {
-        MorningText.text = Mathf.RoundToInt(player.Health).ToString();
-        NoonText.text = Mathf.RoundToInt(player.Hunger).ToString();
-        EveText.text = Mathf.RoundToInt(player.Thirst).ToString();
+        MorningText.text = "Charisma of this Character is: " + Mathf.RoundToInt(player.Charisma);
+        NoonText.text = "Strength of this Character is: " + Mathf.RoundToInt(player.Strength);
+        EveText.text = "Intelligence of this Character is: " + Mathf.RoundToInt(player.Intelligence);
+    }
+
+    public void ResetTexts()
+    {
+        MorningText.text = "";
+        NoonText.text = "";
+        EveText.text = "";
+        NightText.text = "";
     }
 }
