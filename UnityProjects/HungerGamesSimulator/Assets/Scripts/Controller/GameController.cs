@@ -5,6 +5,7 @@ public class GameController : Singleton<GameController>
 {
     public bool EnableDebug = true;
     public bool DebugStats = true;
+    public Sprite TestSprite;
 
     /// <summary>
     /// PreInit is invoked in Unitys Awake Method
@@ -53,11 +54,12 @@ public class GameController : Singleton<GameController>
         {
             PlayerController.Instance.GiveItemToPlayer(0, new FoodItem
             {
-                Name = "Fiery Greatsword",
+                Name = "Banana",
+                Icon = TestSprite,
                 Buff = "",
-                DrinkValue = 10,
-                FoodValue = 100,
-                Rarity = ItemRarity.Legendary
+                DrinkValue = 0,
+                FoodValue = 45,
+                Rarity = ItemRarity.Common
             });
         }
 
@@ -65,11 +67,12 @@ public class GameController : Singleton<GameController>
         {
             PlayerController.Instance.TakeItemToPlayer(0, new FoodItem
             {
-                Name = "Fiery Greatsword",
+                Name = "Banana",
+                Icon = TestSprite,
                 Buff = "",
-                DrinkValue = 10,
-                FoodValue = 100,
-                Rarity = ItemRarity.Legendary
+                DrinkValue = 0,
+                FoodValue = 45,
+                Rarity = ItemRarity.Common
             });
         }
 
