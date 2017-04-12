@@ -1,4 +1,5 @@
 ﻿using System;
+using EmptySkull.TypeDatabases;
 using UnityEngine;
 
 public class GameController : Singleton<GameController>
@@ -35,6 +36,7 @@ public class GameController : Singleton<GameController>
 
     void Start()
     {
+        DatabaseReader.Load();
         if (Init != null)
             Init.Invoke();
         if (PostInit != null)
@@ -52,28 +54,12 @@ public class GameController : Singleton<GameController>
     {
         if(GUI.Button(new Rect(5,505,120,35), "Give Player0 Item"))
         {
-            PlayerController.Instance.GiveItemToPlayer(0, new FoodItem
-            {
-                Name = "Banana",
-                Icon = TestSprite,
-                Buff = "",
-                DrinkValue = 0,
-                FoodValue = 45,
-                Rarity = ItemRarity.Common
-            });
+            PlayerController.Instance.GiveItemToPlayer(0, DatabaseReader.GetItem<FoodItem>(FoodItems_Enum.Banana));
         }
 
         if (GUI.Button(new Rect(5, 545, 120, 35), "Take Player0 Item"))
         {
-            PlayerController.Instance.TakeItemToPlayer(0, new FoodItem
-            {
-                Name = "Banana",
-                Icon = TestSprite,
-                Buff = "",
-                DrinkValue = 0,
-                FoodValue = 45,
-                Rarity = ItemRarity.Common
-            });
+            PlayerController.Instance.TakeItemToPlayer(0, DatabaseReader.GetItem<FoodItem>(FoodItems_Enum.Banana));
         }
 
         if (GUI.Button(new Rect(5, 585, 120, 35), "Reset"))

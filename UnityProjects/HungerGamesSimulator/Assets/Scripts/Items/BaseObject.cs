@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Text;
+using EmptySkull.TypeDatabases;
 using UnityEngine;
 
 [Serializable]
-public class BaseObject
+public class BaseObject : DatabaseAsset
 {
-    public string Name;
+    //public string Name;
     public Sprite Icon;
     public ItemRarity Rarity;
 
