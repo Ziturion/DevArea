@@ -6,7 +6,7 @@ public class GameController : Singleton<GameController>
 {
     public bool EnableDebug = true;
     public bool DebugStats = true;
-    public Sprite TestSprite;
+    public Sprite MissingSprite;
 
     /// <summary>
     /// PreInit is invoked in Unitys Awake Method
@@ -45,8 +45,32 @@ public class GameController : Singleton<GameController>
 
 	void Update ()
     {
-		
-	}
+        if (Input.GetKeyDown(KeyCode.A))
+            PlayerController.Instance.GiveItemToPlayer(0, DatabaseReader.GetItem<FoodItem>(FoodItems_Enum.Apple));
+
+        if (Input.GetKeyDown(KeyCode.S))
+            PlayerController.Instance.GiveItemToPlayer(0, DatabaseReader.GetItem<FoodItem>(FoodItems_Enum.Banana));
+
+        if (Input.GetKeyDown(KeyCode.D))
+            PlayerController.Instance.GiveItemToPlayer(0, DatabaseReader.GetItem<FoodItem>(FoodItems_Enum.Grapes));
+
+        if (Input.GetKeyDown(KeyCode.F))
+            PlayerController.Instance.GiveItemToPlayer(0, DatabaseReader.GetItem<FoodItem>(FoodItems_Enum.SupremePizza));
+
+
+        if (Input.GetKeyDown(KeyCode.Q))
+            PlayerController.Instance.TakeItemToPlayer(0, DatabaseReader.GetItem<FoodItem>(FoodItems_Enum.Apple));
+
+        if (Input.GetKeyDown(KeyCode.W))
+            PlayerController.Instance.TakeItemToPlayer(0, DatabaseReader.GetItem<FoodItem>(FoodItems_Enum.Banana));
+
+        if (Input.GetKeyDown(KeyCode.E))
+            PlayerController.Instance.TakeItemToPlayer(0, DatabaseReader.GetItem<FoodItem>(FoodItems_Enum.Grapes));
+
+        if (Input.GetKeyDown(KeyCode.R))
+            PlayerController.Instance.TakeItemToPlayer(0, DatabaseReader.GetItem<FoodItem>(FoodItems_Enum.SupremePizza));
+
+    }
 
 #if UNITY_EDITOR
 

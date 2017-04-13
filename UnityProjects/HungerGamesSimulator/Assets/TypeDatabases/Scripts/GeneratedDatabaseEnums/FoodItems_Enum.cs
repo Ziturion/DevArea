@@ -7,4 +7,12 @@ public enum FoodItems_Enum
 {
 	Apple = 1,
 	Banana = 2,
+	Grapes = 3,
+	Dragonfruit = 4,
+	Bread = 5,
+	EnergyBar = 6,
+	SpareRibs = 7,
+	ChickenSticks = 8,
+	Hamburger = 9,
+	SupremePizza = 10,
 }

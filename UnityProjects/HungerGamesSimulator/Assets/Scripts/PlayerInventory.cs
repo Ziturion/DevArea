@@ -62,7 +62,7 @@ public class PlayerInventory : MonoBehaviour
             return;
 
         //if no item found 
-        if (Items.All(t => t.Name != item.Name))
+        if (Items.Where(t => t != null).All(t => t.Name != item.Name))
             return;
 
         RemoveItem(Array.FindIndex(Items, t => t.Name == item.Name)); //TODO Change to Index
@@ -77,7 +77,7 @@ public class PlayerInventory : MonoBehaviour
             if (Items[i] == null)
                 continue;
 
-            ItemImages[i].sprite = Items[i].Icon;
+            ItemImages[i].sprite = Items[i].GetIcon();
         }
     }
 

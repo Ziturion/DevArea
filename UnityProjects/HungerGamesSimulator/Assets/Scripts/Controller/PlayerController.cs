@@ -121,7 +121,7 @@ public class PlayerController : Singleton<PlayerController>
     {
         for (int i = AllPlayers.Count - 1; i >= 0; i--)
         {
-            AllPlayers[i].PhaseStatDecrease(TimeController.Instance.CurrentTime);
+            AllPlayers[i].PlayerPhaseCompute(TimeController.Instance.CurrentTime);
         }
     }
 

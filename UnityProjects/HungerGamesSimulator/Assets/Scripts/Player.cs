@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     public Slider HealthBar, HungerBar, ThirstBar;
     public PlayerInventory Inventory;
     public Image ActiveImage;
+    public PercentageQueue<Needs> NeedQueue = new PercentageQueue<Needs>();
 
     public event Action OnDeath;
 
@@ -104,6 +105,12 @@ public class Player : MonoBehaviour
 
         Refresh();
         Inventory.RefreshIcons();
+
+        NeedQueue.Add(Needs.FoodNeed, () => (0.6f - (Hunger * 0.01f)) * 1.65f);
+        NeedQueue.Add(Needs.DrinkNeed, () => (0.75f - (Thirst * 0.01f)) * 1.34f);
+
+        NeedQueue.Add(Needs.RestNeed, 0);
+        NeedQueue.Add(Needs.KillNeed, 0);
     }
 
     public void Refresh()
@@ -125,7 +132,13 @@ public class Player : MonoBehaviour
         PlayerController.Instance.ClickedOnPlayer(this);
     }
 
-    public bool PhaseStatDecrease(TimeController.TimeOfDay phase)
+    public void PlayerPhaseCompute(TimeController.TimeOfDay phase)
+    {
+        PhaseStatDecrease(phase);
+        PhaseNeedEvaluation(phase);
+    }
+
+    private void PhaseStatDecrease(TimeController.TimeOfDay phase)
     {
         switch (phase)
         { 
@@ -153,8 +166,15 @@ public class Player : MonoBehaviour
             _starvingPoints = 0;
 
         Health -= _starvingPoints;
+    }
 
-        return true;
+    private void PhaseNeedEvaluation(TimeController.TimeOfDay phase)
+    {
+        NeedQueue.Change(Needs.FoodNeed, () => (0.6f - (Hunger * 0.01f)) * 1.65f);
+        NeedQueue.Change(Needs.DrinkNeed, () => (0.75f - (Thirst * 0.01f)) * 1.34f);
+
+        NeedQueue.Change(Needs.RestNeed, 0);
+        NeedQueue.Change(Needs.KillNeed, 0);
     }
 
     private static PlayerStats GenerateStats()
@@ -216,5 +236,13 @@ public class Player : MonoBehaviour
             return string.Format("First: {0}, Second: {1}, Third: {2}", PrimaryStat,
                 SecondaryStat, TertiarStat);
         }
+    }
+
+    public enum Needs
+    {
+        FoodNeed,
+        DrinkNeed,
+        RestNeed,
+        KillNeed
     }
 }
