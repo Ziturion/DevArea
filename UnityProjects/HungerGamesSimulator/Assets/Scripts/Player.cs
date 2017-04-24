@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -175,6 +176,63 @@ public class Player : MonoBehaviour
 
         NeedQueue.Change(Needs.RestNeed, 0);
         NeedQueue.Change(Needs.KillNeed, 0);
+
+        //Debug.Log(NeedQueue.Get());
+        NeedFeedback(NeedQueue.Get());
+    }
+
+    private void NeedFeedback(Needs need)
+    {
+        bool fulfilledNeed = false;
+        switch (need)
+        {
+            case Needs.FoodNeed:
+                fulfilledNeed = Eat();
+                break;
+            case Needs.DrinkNeed:
+                fulfilledNeed = Drink();
+                break;
+            case Needs.RestNeed:
+                break;
+            case Needs.KillNeed:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException("need", need, null);
+        }
+        if (fulfilledNeed)
+            return;
+
+        PlayerController.Instance.PlayerIsSearching(this);
+        Debug.Log("Finding Traps or Searching for Items");
+    }
+
+    private bool Eat()
+    {
+        FoodItem[] fooditems = Inventory.GetAllItems().OfType<FoodItem>().ToArray();
+
+        if (fooditems.Length <= 0 || Hunger / MaxHunger > 0.7f)
+            return false;
+
+        FoodItem selectedFood = fooditems.OrderBy(t => t.FoodValue).First();
+        Inventory.RemoveItem(selectedFood);
+        Hunger += selectedFood.FoodValue;
+        Thirst += selectedFood.DrinkValue;
+
+        return true;
+    }
+
+    private bool Drink()
+    {
+        DrinkItem[] fooditems = Inventory.GetAllItems().OfType<DrinkItem>().ToArray();
+
+        if (fooditems.Length <= 0)
+            return false;
+
+        DrinkItem selectedFood = fooditems.OrderBy(t => t.DrinkValue).First();
+        Inventory.RemoveItem(selectedFood);
+        Thirst += selectedFood.DrinkValue;
+
+        return true;
     }
 
     private static PlayerStats GenerateStats()

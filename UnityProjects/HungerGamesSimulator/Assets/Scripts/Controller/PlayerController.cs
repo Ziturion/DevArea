@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using EmptySkull.TypeDatabases;
 using UnityEngine;
 
 public class PlayerController : Singleton<PlayerController>
@@ -8,6 +10,14 @@ public class PlayerController : Singleton<PlayerController>
     public Transform PlayerAnchor;
 
     public const int InventorySize = 5;
+
+    public float ChanceItemFind = 0.5f;
+    public float ChanceTrapFind = 0.2f;
+    public float ChanceSurvivorFind = 0.1f;
+
+    public float ChanceFood = 0.5f;
+    public float ChanceDrink = 0.4f;
+    public float ChanceWeapon = 0.2f;
 
     public List<Player> AllPlayers { get; private set; }
 
@@ -25,6 +35,11 @@ public class PlayerController : Singleton<PlayerController>
         DeselectAllPlayers();
         player.ActiveImage.enabled = true;
         InfoManager.Instance.RefreshPlayerInfo(player);
+    }
+
+    public Player GetRandomPlayerEncounter()
+    {
+        return AllPlayers[Random.Range(0, AllPlayers.Count)];
     }
 
     public void GiveItemToPlayer(Player player, GenericItem item)
@@ -97,6 +112,73 @@ public class PlayerController : Singleton<PlayerController>
         for (int i = 0; i < 16; i++)
         {
             AddPlayer("Dummy" + i);
+        }
+    }
+
+    public void PlayerIsSearching(Player player)
+    {
+        if (ChanceItemFind > Random.Range(0f, 1f))
+        {
+            PlayerFindsItem(player);
+            return;
+        }
+
+        if (ChanceTrapFind > Random.Range(0f, 1f))
+        {
+            PlayerFindsTrap(player);
+            return;
+        }
+
+        if (ChanceSurvivorFind > Random.Range(0f, 1f))
+        {
+            PlayerFindsSurvivor(player);
+            return;
+        }
+
+        PlayerFindsItem(player);
+    }
+
+    private void PlayerFindsItem(Player player)
+    {
+        //TODO RarityContext
+
+        if (ChanceFood > Random.Range(0f, 1f))
+        {
+            GiveItemToPlayer(player, BaseObject.GetObjectByRarity(DatabaseReader.GetAllItems("FoodItems").OfType<BaseObject>().ToArray()) as FoodItem);
+            return;
+        }
+
+        if (ChanceDrink > Random.Range(0f, 1f))
+        {
+            GiveItemToPlayer(player, BaseObject.GetObjectByRarity(DatabaseReader.GetAllItems("DrinkItems").OfType<BaseObject>().ToArray()) as DrinkItem);
+            return;
+        }
+
+        if (ChanceWeapon > Random.Range(0f, 1f))
+        {
+            GiveItemToPlayer(player, BaseObject.GetObjectByRarity(DatabaseReader.GetAllItems("WeaponItems").OfType<BaseObject>().ToArray()) as WeaponItem);
+            return;
+        }
+        GiveItemToPlayer(player, BaseObject.GetObjectByRarity(DatabaseReader.GetAllItems("FoodItems").OfType<BaseObject>().ToArray()) as FoodItem);
+    }
+
+    private void PlayerFindsTrap(Player player)
+    {
+        //TODO RarityContext
+        Debug.Log("Trap Found...");
+        RemovePlayer(player); //Kill Player
+    }
+
+    private void PlayerFindsSurvivor(Player player)
+    {
+        Debug.Log("Player Found...");
+        if (0.5f > Random.Range(0f, 1f)) // 50/50
+        {
+            RemovePlayer(player); //Kill Player
+        }
+        else
+        {
+            RemovePlayer(GetRandomPlayerEncounter()); //Kill Defender
         }
     }
 

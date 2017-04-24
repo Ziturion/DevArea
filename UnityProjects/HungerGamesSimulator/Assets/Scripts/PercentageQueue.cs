@@ -68,7 +68,7 @@ public class PercentageQueue<T>
                 return sortedItems[i].Object;
             }
         }
-        return _percentObjs.OrderBy(t => t.Percentage).First().Object; //return first object Fallback
+        return sortedItems.First().Object; //return first object Fallback
     }
 
     public void Change(T obj, float newPercentage)
