@@ -109,7 +109,7 @@ MonoBehaviour:
   m_MinSize: {x: 568, y: 492}
   m_MaxSize: {x: 14004, y: 14042}
   vertical: 0
-  controlID: 120
+  controlID: 71
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -133,7 +133,7 @@ MonoBehaviour:
   m_MinSize: {x: 306, y: 492}
   m_MaxSize: {x: 10002, y: 14042}
   vertical: 1
-  controlID: 50
+  controlID: 72
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -261,7 +261,7 @@ MonoBehaviour:
   m_MinSize: {x: 262, y: 362}
   m_MaxSize: {x: 4002, y: 8042}
   vertical: 1
-  controlID: 121
+  controlID: 170
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -471,7 +471,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: befbffff00000000
+    m_ExpandedIDs: a0bfffff2ec0ffffbefbffff0000000060260000a0260000ba2600000a27000060270000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -631,19 +631,19 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Sprites/Objects/Food
+    - Assets/Resources
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Sprites/Objects/Food
+  - Assets/Resources
   m_LastFoldersGridSize: 16
   m_LastProjectPath: D:\DevArea\DevArea\UnityProjects\HungerGamesSimulator
   m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 118}
-    m_SelectedIDs: a0250000
-    m_LastClickedID: 9632
-    m_ExpandedIDs: 000000002c250000582500009e250000be250000de250000e8250000122600001426000000ca9a3bffffff7f
+    scrollPos: {x: 0, y: 60}
+    m_SelectedIDs: 3c260000
+    m_LastClickedID: 9788
+    m_ExpandedIDs: 000000002c2500005c250000b2250000d2250000002600000a2600003c2600003e26000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -671,7 +671,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000002c250000582500009e250000be250000de2500001226000014260000
+    m_ExpandedIDs: 000000002c2500005c250000b2250000d2250000002600000a2600003c2600003e260000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -699,21 +699,21 @@ MonoBehaviour:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 1
-    m_ExpandedInstanceIDs: d60c00004c080000560e0000680e000026080000b2350000acdaffffe8440000404400002245000068440000924500001cc8faff4c070000e8080000520e00005008000056070000962e00001461fdff28100000ec080000107f0100804e000000090000ec0f00004c100000fc09000084100000480f0000de100000760e000010080000980b0000e20a0000b20f0000800e0000c20a00006c0900005e0c000018080000fe0a0000fc07000088100000b03900008a100000fa3900009a5700003a3b0000901000003a280000ec250000ae3c0000f8250000521f000078260000de8ffeffcc1e0000502600003c24000072220000422200007022000004230000d023000012230000a22200002e230000a4240000702b0000e02a0000e62a0000e82600000e2f00008a460000c2310000182400000e2c0000a6320000a8470000c44700000435000038230000362300006c280100bc2300007e2e0000dc2500008040000064330000e8240000222a0000002a00001e390000bc240000a6240000882400009224000020410000582d0000482e0000502e00000000000098670000
+    m_ExpandedInstanceIDs: d60c00004c080000560e0000680e000026080000b2350000acdaffffe8440000404400002245000068440000924500001cc8faff4c070000e8080000520e00005008000056070000962e00001461fdff28100000ec080000107f0100804e000000090000ec0f00004c100000fc09000084100000480f0000de100000760e000010080000980b0000e20a0000b20f0000800e0000c20a00006c0900005e0c000018080000fe0a0000fc07000088100000b03900008a100000fa3900009a5700003a3b0000901000003a280000ae3c0000f8250000521f000078260000de8ffeffcc1e0000502600003c24000072220000422200007022000004230000d023000012230000a22200002e230000a4240000702b0000e02a0000e62a0000e82600000e2f00008a460000c2310000182400000e2c0000a6320000a8470000c44700000435000038230000362300006c280100bc2300007e2e00008040000064330000e8240000222a0000002a00001e390000bc240000a6240000882400009224000020410000582d0000482e0000502e000000000000986700001e260000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: 
-      m_OriginalName: 
+      m_Name: deaths
+      m_OriginalName: deaths
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 0
+      m_UserData: 12986
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 11
+      m_OriginalEventType: 0
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 10}
     m_CreateAssetUtility:
@@ -882,10 +882,10 @@ MonoBehaviour:
   m_DepthBufferBits: 0
   m_Pos:
     serializedVersion: 2
-    x: 1530
+    x: 1462
     y: 91
-    width: 390
-    height: 711
+    width: 458
+    height: 629
 --- !u!114 &26
 MonoBehaviour:
   m_ObjectHideFlags: 52

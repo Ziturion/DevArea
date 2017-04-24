@@ -1,0 +1,16 @@
+{
+    "Trap": [
+        {
+            "index": "0",
+            "text": "Die Bärenfalle hackte ihm das Bein ab. Er ist verblutet."
+        },
+        {
+            "index": "1",
+            "text": "Er ist verbrannt."
+        },
+        {
+            "index": "2",
+            "text": "Durch Speere in der Wand erstochen."
+        }
+    ]
+}

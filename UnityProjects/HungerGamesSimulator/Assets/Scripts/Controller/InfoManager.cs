@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using EmptySkull.TypeDatabases;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class InfoManager : Singleton<InfoManager>
@@ -15,6 +16,11 @@ public class InfoManager : Singleton<InfoManager>
         MorningText.text = "Charisma of this Character is: " + Mathf.RoundToInt(player.Charisma);
         NoonText.text = "Strength of this Character is: " + Mathf.RoundToInt(player.Strength);
         EveText.text = "Intelligence of this Character is: " + Mathf.RoundToInt(player.Intelligence);
+
+        MorningText.text = JSONReader.GetDeathText(new PlayerController.Cause(DatabaseReader.GetItem<Trap>(Traps_Enum.BearTrap)));
+        NoonText.text = "Strength of this Character is: " + Mathf.RoundToInt(player.Strength);
+        EveText.text = "Intelligence of this Character is: " + Mathf.RoundToInt(player.Intelligence);
+
         NightText.text = player.NeedQueue.ToString();
     }
 

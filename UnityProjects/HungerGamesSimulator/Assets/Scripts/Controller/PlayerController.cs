@@ -76,24 +76,24 @@ public class PlayerController : Singleton<PlayerController>
         TakeItemToPlayer(AllPlayers[playerIndex], item);
     }
 
-    public void RemovePlayer(int index)
+    public void RemovePlayer(int index, Cause cause = null)
     {
         if (index < 0 || index > AllPlayers.Count)
             return;
 
-        RemovePlayer(AllPlayers[index]);
+        RemovePlayer(AllPlayers[index], cause);
     }
-    public void RemovePlayer(string playerName)
+    public void RemovePlayer(string playerName, Cause cause = null)
     {
-        RemovePlayer(AllPlayers.Find(t => t.PlayerName.text == playerName));
+        RemovePlayer(AllPlayers.Find(t => t.PlayerName.text == playerName), cause);
     }
-    public void RemovePlayer(Player player)
+    public void RemovePlayer(Player player, Cause cause = null)
     {
         if (!AllPlayers.Contains(player))
             return;
 
-        Destroy(player.gameObject);
-        AllPlayers.Remove(player);
+        player.SetInactive(cause);
+        //AllPlayers.Remove(player);
     }
 
     public void RemoveAllPlayers()
@@ -164,9 +164,14 @@ public class PlayerController : Singleton<PlayerController>
 
     private void PlayerFindsTrap(Player player)
     {
-        //TODO RarityContext
-        Debug.Log("Trap Found...");
-        RemovePlayer(player); //Kill Player
+        Trap foundTrap = BaseObject.GetObjectByRarity(DatabaseReader.GetAllItems("Traps").OfType<BaseObject>().ToArray()) as Trap;
+
+        if (foundTrap.SurviveChance + (player.Intelligence * 0.04f) < Random.Range(0f, 1f))
+        {
+            RemovePlayer(player, new Cause(foundTrap)); //Kill Player
+        }
+
+        Debug.Log("Player Survived");
     }
 
     private void PlayerFindsSurvivor(Player player)
@@ -193,9 +198,11 @@ public class PlayerController : Singleton<PlayerController>
 
     private void RefreshAllPlayers()
     {
+        AllPlayers = AllPlayers.OrderBy(t => !t.Active).ToList();
         foreach (Player player in AllPlayers)
         {
             player.Refresh();
+            player.gameObject.transform.SetSiblingIndex(AllPlayers.IndexOf(player));
         }
     }
 
@@ -215,5 +222,13 @@ public class PlayerController : Singleton<PlayerController>
         AllPlayers.Add(player);
     }
 
+    public class Cause
+    {
+        public BaseObject Instigator;
 
+        public Cause(BaseObject instigator)
+        {
+            Instigator = instigator;
+        }
+    }
 }

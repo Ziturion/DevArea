@@ -15,6 +15,9 @@ public class Player : MonoBehaviour
 
     public event Action OnDeath;
 
+    private bool _active = true;
+    public bool Active { get { return _active; }  set { _active = value; }}
+
     public float MaxHealth { get; private set; }
     public float MaxHunger { get; private set; }
     public float MaxThirst { get; private set; }
@@ -135,8 +138,22 @@ public class Player : MonoBehaviour
 
     public void PlayerPhaseCompute(TimeController.TimeOfDay phase)
     {
+        if (!Active)
+            return;
         PhaseStatDecrease(phase);
         PhaseNeedEvaluation(phase);
+    }
+
+    public void SetInactive(PlayerController.Cause cause)
+    {
+        HealthBar.gameObject.SetActive(false);
+        HungerBar.gameObject.SetActive(false);
+        ThirstBar.gameObject.SetActive(false);
+        Active = false;
+
+        if (cause == null)
+            return;
+
     }
 
     private void PhaseStatDecrease(TimeController.TimeOfDay phase)
@@ -203,7 +220,6 @@ public class Player : MonoBehaviour
             return;
 
         PlayerController.Instance.PlayerIsSearching(this);
-        Debug.Log("Finding Traps or Searching for Items");
     }
 
     private bool Eat()
