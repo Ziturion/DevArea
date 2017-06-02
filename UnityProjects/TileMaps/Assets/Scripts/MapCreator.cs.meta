@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: bcf9129f4c754b7488d93e14f79c3ada
+timeCreated: 1496419549
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - DirtSprite: {fileID: 21301398, guid: 64a6f21e58aa88d4ab9f77d18f380734, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
