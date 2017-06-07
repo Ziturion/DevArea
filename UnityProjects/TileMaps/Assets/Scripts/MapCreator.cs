@@ -3,11 +3,17 @@ using UnityEngine;
 
 public class MapCreator : Singleton<MapCreator>
 {
-    
-    public Sprite[] DirtSprites;
     public float SpriteWidth = 0.32f;
     public Vector2 Size = new Vector2(20,20);
     public bool Centered = false;
+
+    public int Seed = 1337;
+    public float Scale = 0.4f;
+    public int Octaves = 4;
+    public float Persistance = 0.5f;
+    public float Lacunarity = 2f;
+
+    public TerrainType[] Regions;
 
     public Vector2 Offset
     {
@@ -18,17 +24,36 @@ public class MapCreator : Singleton<MapCreator>
     }
 
     private readonly List<GameObject> _sprites = new List<GameObject>();
+    private float[,] _noiseMap;
+
+
+    void Awake()
+    {
+        _noiseMap = Noise.GenerateNoiseMap((int) Size.x, (int) Size.y, Seed, Scale, Octaves, Persistance, Lacunarity, new Vector2(0, 0));
+    }
 
 	void Start ()
     {
+
+        DrawTexture(TextureGenerator.TextureFromHeightMap(_noiseMap));
+
+        //Sprite[,] sprites = new Sprite[Size.x, Size.x];
         for (int y = 0; y < Size.y; y++)
         {
             for (int x = 0; x < Size.x; x++)
             {
-                CreateNewTile(DirtSprites[Random.Range(0, DirtSprites.Length)], x, y, Offset);
+                float currentHeight = _noiseMap[x, y];
+                for (int i = 0; i < Regions.Length; i++)
+                {
+                    if (currentHeight <= Regions[i].Height)
+                    {
+                        CreateNewTile(Regions[i].Sprites[Random.Range(0, Regions[i].Sprites.Length)], x, y, Offset);
+                        break;
+                    }
+                }
             }
         }
-	}
+    }
 
     public void CreateNewTile(Sprite sprite, int xCoord, int yCoord, float xOffset  = 0, float yOffset = 0)
     {
@@ -48,4 +73,19 @@ public class MapCreator : Singleton<MapCreator>
     {
         CreateNewTile(sprite, xCoord, yCoord, offset.x, offset.y);
     }
+
+    public void DrawTexture(Texture2D texture)
+    {
+        Renderer textureRender = GetComponent<Renderer>();
+        textureRender.sharedMaterial.mainTexture = texture;
+        //textureRender.transform.localScale = new Vector3(texture.width, 1, texture.height);
+    }
+}
+
+[System.Serializable]
+public struct TerrainType
+{
+    public string Name;
+    public float Height;
+    public Sprite[] Sprites;
 }
