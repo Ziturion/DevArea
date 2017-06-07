@@ -15,6 +15,8 @@ public class MapCreator : Singleton<MapCreator>
 
     public TerrainType[] Regions;
 
+    public bool AutoUpdate;
+
     public Vector2 Offset
     {
         get
@@ -26,18 +28,40 @@ public class MapCreator : Singleton<MapCreator>
     private readonly List<GameObject> _sprites = new List<GameObject>();
     private float[,] _noiseMap;
 
-
-    void Awake()
-    {
-        _noiseMap = Noise.GenerateNoiseMap((int) Size.x, (int) Size.y, Seed, Scale, Octaves, Persistance, Lacunarity, new Vector2(0, 0));
-    }
-
 	void Start ()
     {
+        //Generate();
+    }
 
-        DrawTexture(TextureGenerator.TextureFromHeightMap(_noiseMap));
+    void OnValidate()
+    {
+        if (Size.x < 1)
+        {
+            Size.x = 1;
+        }
+        if (Size.y < 1)
+        {
+            Size.y = 1;
+        }
+        if (Lacunarity < 1)
+        {
+            Lacunarity = 1;
+        }
+        if (Octaves < 0)
+        {
+            Octaves = 0;
+        }
+    }
 
-        //Sprite[,] sprites = new Sprite[Size.x, Size.x];
+
+    public void Generate()
+    {
+        ClearAllChildren();
+        //DrawTexture(TextureGenerator.TextureFromHeightMap(_noiseMap));
+        _noiseMap = Noise.GenerateNoiseMap((int)Size.x, (int)Size.y, Seed, Scale, Octaves, Persistance, Lacunarity, new Vector2(0, 0));
+
+        Sprite[,] sprites = new Sprite[(int)Size.x, (int)Size.y];
+
         for (int y = 0; y < Size.y; y++)
         {
             for (int x = 0; x < Size.x; x++)
@@ -47,12 +71,15 @@ public class MapCreator : Singleton<MapCreator>
                 {
                     if (currentHeight <= Regions[i].Height)
                     {
-                        CreateNewTile(Regions[i].Sprites[Random.Range(0, Regions[i].Sprites.Length)], x, y, Offset);
+                        sprites[x, y] = Regions[i].Sprites[Random.Range(0, Regions[i].Sprites.Length)];
+                        //CreateNewTile(Regions[i].Sprites[Random.Range(0, Regions[i].Sprites.Length)], x, y, Offset);
                         break;
                     }
                 }
             }
         }
+
+        DrawTexture(TextureGenerator.TextureFromSprites(sprites, (int)Size.x, (int)Size.y));
     }
 
     public void CreateNewTile(Sprite sprite, int xCoord, int yCoord, float xOffset  = 0, float yOffset = 0)
@@ -79,6 +106,15 @@ public class MapCreator : Singleton<MapCreator>
         Renderer textureRender = GetComponent<Renderer>();
         textureRender.sharedMaterial.mainTexture = texture;
         //textureRender.transform.localScale = new Vector3(texture.width, 1, texture.height);
+    }
+
+    public void ClearAllChildren()
+    {
+        for (int i = transform.childCount - 1; i >= 0; i--)
+        {
+            DestroyImmediate(transform.GetChild(i).gameObject);
+        }
+        _sprites.Clear();
     }
 }
 
