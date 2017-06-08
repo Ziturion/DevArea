@@ -3,11 +3,19 @@ using UnityEngine;
 
 public class MapCreator : Singleton<MapCreator>
 {
-    
-    public Sprite[] DirtSprites;
     public float SpriteWidth = 0.32f;
     public Vector2 Size = new Vector2(20,20);
     public bool Centered = false;
+
+    public int Seed = 1337;
+    public float Scale = 0.4f;
+    public int Octaves = 4;
+    public float Persistance = 0.5f;
+    public float Lacunarity = 2f;
+
+    public TerrainType[] Regions;
+
+    public bool AutoUpdate;
 
     public Vector2 Offset
     {
@@ -18,17 +26,61 @@ public class MapCreator : Singleton<MapCreator>
     }
 
     private readonly List<GameObject> _sprites = new List<GameObject>();
+    private float[,] _noiseMap;
 
 	void Start ()
     {
+        //Generate();
+    }
+
+    void OnValidate()
+    {
+        if (Size.x < 1)
+        {
+            Size.x = 1;
+        }
+        if (Size.y < 1)
+        {
+            Size.y = 1;
+        }
+        if (Lacunarity < 1)
+        {
+            Lacunarity = 1;
+        }
+        if (Octaves < 0)
+        {
+            Octaves = 0;
+        }
+    }
+
+
+    public void Generate()
+    {
+        ClearAllChildren();
+        //DrawTexture(TextureGenerator.TextureFromHeightMap(_noiseMap));
+        _noiseMap = Noise.GenerateNoiseMap((int)Size.x, (int)Size.y, Seed, Scale, Octaves, Persistance, Lacunarity, new Vector2(0, 0));
+
+        Sprite[,] sprites = new Sprite[(int)Size.x, (int)Size.y];
+
         for (int y = 0; y < Size.y; y++)
         {
             for (int x = 0; x < Size.x; x++)
             {
-                CreateNewTile(DirtSprites[Random.Range(0, DirtSprites.Length)], x, y, Offset);
+                float currentHeight = _noiseMap[x, y];
+                for (int i = 0; i < Regions.Length; i++)
+                {
+                    if (currentHeight <= Regions[i].Height)
+                    {
+                        sprites[x, y] = Regions[i].Sprites[Random.Range(0, Regions[i].Sprites.Length)];
+                        //CreateNewTile(Regions[i].Sprites[Random.Range(0, Regions[i].Sprites.Length)], x, y, Offset);
+                        break;
+                    }
+                }
             }
         }
-	}
+
+        DrawTexture(TextureGenerator.TextureFromSprites(sprites, (int)Size.x, (int)Size.y));
+    }
 
     public void CreateNewTile(Sprite sprite, int xCoord, int yCoord, float xOffset  = 0, float yOffset = 0)
     {
@@ -48,4 +100,28 @@ public class MapCreator : Singleton<MapCreator>
     {
         CreateNewTile(sprite, xCoord, yCoord, offset.x, offset.y);
     }
+
+    public void DrawTexture(Texture2D texture)
+    {
+        Renderer textureRender = GetComponent<Renderer>();
+        textureRender.sharedMaterial.mainTexture = texture;
+        //textureRender.transform.localScale = new Vector3(texture.width, 1, texture.height);
+    }
+
+    public void ClearAllChildren()
+    {
+        for (int i = transform.childCount - 1; i >= 0; i--)
+        {
+            DestroyImmediate(transform.GetChild(i).gameObject);
+        }
+        _sprites.Clear();
+    }
+}
+
+[System.Serializable]
+public struct TerrainType
+{
+    public string Name;
+    public float Height;
+    public Sprite[] Sprites;
 }
