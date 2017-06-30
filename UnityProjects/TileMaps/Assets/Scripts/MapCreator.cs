@@ -72,7 +72,7 @@ public class MapCreator : Singleton<MapCreator>
                     if (currentHeight <= Regions[i].Height)
                     {
                         sprites[x, y] = Regions[i].Sprites[Random.Range(0, Regions[i].Sprites.Length)];
-                        //CreateNewTile(Regions[i].Sprites[Random.Range(0, Regions[i].Sprites.Length)], x, y, Offset);
+                        CreateNewTile(Regions[i].Sprites[Random.Range(0, Regions[i].Sprites.Length)], x, y, Offset);
                         break;
                     }
                 }
