@@ -1,22 +1,15 @@
-5.4.1f1:3.1.0.0
+5.6.2f1:3.1.0.0
 StandaloneWindows
-D:/Unity 5_4_1/Editor/Data/Managed/UnityEngine.dll
-D:/Unity 5_4_1/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll
-D:/Unity 5_4_1/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll
-D:/Unity 5_4_1/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll
-D:/Unity 5_4_1/Editor/Data/Managed/UnityEditor.dll
-D:/Unity 5_4_1/Editor/Data/PlaybackEngines/iOSSupport\UnityEditor.iOS.Extensions.Xcode.dll
-D:/Unity 5_4_1/Editor/Data/PlaybackEngines/iOSSupport\UnityEditor.iOS.Extensions.Common.dll
-D:/Unity 5_4_1/Editor/Data/UnityExtensions/Unity/Advertisements/Editor/UnityEditor.Advertisements.dll
-D:/Unity 5_4_1/Editor/Data/UnityExtensions/Unity/EditorTestsRunner/Editor/nunit.framework.dll
-D:/Unity 5_4_1/Editor/Data/UnityExtensions/Unity/EditorTestsRunner/Editor/UnityEditor.EditorTestsRunner.dll
-D:/Unity 5_4_1/Editor/Data/UnityExtensions/Unity/GUISystem/Editor/UnityEditor.UI.dll
-D:/Unity 5_4_1/Editor/Data/UnityExtensions/Unity/Networking/Editor/UnityEditor.Networking.dll
-D:/Unity 5_4_1/Editor/Data/UnityExtensions/Unity/TreeEditor/Editor/UnityEditor.TreeEditor.dll
-D:/Unity 5_4_1/Editor/Data/Managed/UnityEditor.Graphs.dll
-D:/Unity 5_4_1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
-D:/Unity 5_4_1/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.dll
-D:/Unity 5_4_1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
-D:/Unity 5_4_1/Editor/Data/PlaybackEngines/windowsstandalonesupport/UnityEditor.WindowsStandalone.Extensions.dll
-D:/Unity 5_4_1/Editor/Data/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
-C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll
+D:/Unity 5_6_2/Editor/Data/Managed/UnityEngine.dll
+D:/Unity 5_6_2/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll
+D:/Unity 5_6_2/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll
+D:/Unity 5_6_2/Editor/Data/UnityExtensions/Unity/TestRunner/UnityEngine.TestRunner.dll
+D:/Unity 5_6_2/Editor/Data/UnityExtensions/Unity/TestRunner/net35/unity-custom/nunit.framework.dll
+D:/Unity 5_6_2/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll
+D:/Unity 5_6_2/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll
+D:/Unity 5_6_2/Editor/Data/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll
+D:/Unity 5_6_2/Editor/Data/Managed/UnityEditor.dll
+D:/Unity 5_6_2/Editor/Data/Managed/Mono.Cecil.dll
+D:/Unity 5_6_2/Editor/Data/PlaybackEngines/AppleTVSupport/UnityEditor.iOS.Extensions.Xcode.dll
+D:/Unity 5_6_2/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll
+D:/Unity 5_6_2/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Common.dll
