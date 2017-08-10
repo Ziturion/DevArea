@@ -6,8 +6,6 @@ public class DebugManager : Singleton<DebugManager>
 
 	protected void Update()
     {
-
-#if UNITY_EDITOR
         //Debugging
         if (Input.GetKeyDown(KeyCode.F4))
         {
@@ -32,8 +30,6 @@ public class DebugManager : Singleton<DebugManager>
 
         if(CultureDebuggerObject.activeSelf)
             UpdateCultureDebug();
-#endif
-
     }
 
     private void SetCultureDebug(int index)
