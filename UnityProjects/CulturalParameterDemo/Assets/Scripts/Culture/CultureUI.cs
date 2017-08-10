@@ -26,6 +26,17 @@ public class CultureUI : MonoBehaviour
         }
     }
 
+    public void SetInactive()
+    {
+        CultureName.color = Color.gray;
+        BackgroundImage.color = new Color(205,205,205,255);
+
+        foreach (CParameterUI parameter in _allParameters)
+        {
+            parameter.SetInactive();
+        }
+    }
+
     private void ParameterValueChanged(float value, string name)
     {
         if(OnParameterValueChanged != null)

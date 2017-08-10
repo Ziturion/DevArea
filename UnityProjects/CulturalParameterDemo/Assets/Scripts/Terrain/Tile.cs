@@ -42,6 +42,14 @@ public class Tile
         return true;
     }
 
+    public void ForceClaim(Culture culture)
+    {
+        OccupyingCulture = culture;
+
+        if (OnTileClaimed != null)
+            OnTileClaimed.Invoke();
+    }
+
     /// <summary>
     /// Sets the resources to a value in a small random range so that not every tile is the same
     /// </summary>
@@ -59,6 +67,11 @@ public class Tile
     ~Tile()
     {
         OnTileClaimed = null;
+    }
+
+    public override string ToString()
+    {
+        return string.Format("{0} ({1},{2})",TileType,XPosition,YPosition);
     }
 }
 

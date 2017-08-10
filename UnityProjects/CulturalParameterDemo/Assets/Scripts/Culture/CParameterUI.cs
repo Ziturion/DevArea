@@ -20,6 +20,11 @@ public class CParameterUI : MonoBehaviour
         return ParameterValueSlider.value;
     }
 
+    public void SetInactive()
+    {
+        ParameterValueSlider.enabled = false;
+    }
+
     private void SliderValueChanged(float value)
     {
         if(OnSliderValueChanged != null)

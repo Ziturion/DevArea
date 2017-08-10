@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -29,27 +30,37 @@ namespace Ziturion.BehaviourTree
             if (culture.Variables.PopulationSize < culture.Variables.TerritorySize)
                 return null;
 
+            if (possibleTiles.Length <= 0)
+                return null;
+
             switch (_cultureType)
             {
                 case CultureType.Behaviour:
-                    //Debug.Log("CL:Beh"); //Logic for Behavioural Claiming TODO
-                    selectedTile = possibleTiles[Random.Range(0, possibleTiles.Length)];
+                    if (Random.Range(0f, 1f) > 0.5f)
+                    {
+                        selectedTile = possibleTiles.OrderByDescending(t => t.Resources.Water + t.Resources.Food).First();
+                    }
+                    else
+                    {
+                        //TODO Claim the Tile to nearest Enemy
+                        selectedTile = possibleTiles[Random.Range(0, possibleTiles.Length)];
+                    }
+
                     break;
                 case CultureType.Communication:
-                    //Debug.Log("CL:Com"); //Logic for Communicative Claiming TODO
+                    //Debug.Log("CL:Com"); //Logic for Communicative Claiming TODO Claim the Tile to nearest with highest Reputation
                     selectedTile = possibleTiles[Random.Range(0, possibleTiles.Length)];
                     break;
                 case CultureType.Economics:
-                    //Debug.Log("CL:Eco"); //Logic for Economic Claiming TODO
-                    selectedTile = possibleTiles[Random.Range(0, possibleTiles.Length)];
+                    selectedTile = possibleTiles.OrderByDescending(t => t.Resources.Production + t.Resources.Goods).First();
                     break;
                 case CultureType.Sociology:
                     throw new NotSupportedException();
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            if (culture.Name == "Red Culture")
-                Debug.Log(Name);
+            //if (culture.Name == "Red Culture")
+            //    Debug.Log(Name);
             return selectedTile;
         }
     }

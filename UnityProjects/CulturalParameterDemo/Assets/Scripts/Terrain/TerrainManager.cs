@@ -17,7 +17,8 @@ public class TerrainManager : Singleton<TerrainManager>
         TileObject obj = GetTileObject(tile);
         if(tile.OccupyingCulture != null)
             obj.UpdateHighlight(true,tile.OccupyingCulture.CultureColor);
-
+        else
+            obj.UpdateHighlight(false, Color.white);
     }
 
     /// <summary>

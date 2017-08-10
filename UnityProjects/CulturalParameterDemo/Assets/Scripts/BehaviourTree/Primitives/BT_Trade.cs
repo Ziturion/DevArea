@@ -8,8 +8,9 @@ namespace Ziturion.BehaviourTree
 
         public override BT_Callback CallbackState(BT_CallbackInfo info)
         {
-            if (info.CultureInfo.Name == "Red Culture")
-                Debug.Log(Name);
+            //if (info.CultureInfo.Name == "Red Culture")
+            //    Debug.Log(Name);
+            //TODO Logic
             return BT_Callback.False;
         }
     }

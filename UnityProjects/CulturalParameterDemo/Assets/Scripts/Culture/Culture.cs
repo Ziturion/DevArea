@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEngine;
 using Ziturion.BehaviourTree;
+using Random = UnityEngine.Random;
 
 [System.Serializable]
 public class Culture
@@ -11,6 +13,8 @@ public class Culture
     public Vector2 StartPosition;
     public CultureVariables Variables;
     public BehaviourTree BT_Culture;
+    public event Action<Culture> OnPopulationEnd;
+    public event Action<Culture> OnTerritoryEnd;
 
     public Culture(string cultureName, Color cultureColor, Vector2 position, params CultureParameter[] parameter)
     {
@@ -37,6 +41,8 @@ public class Culture
                 new BT_Selector("Sociology", new BT_Reputation("Reputation: Sociology", CultureType.Sociology))));
         BT_Culture.Add(selector);
         //example Behaviour Tree
+
+        Variables.PopulationSize = Random.Range(15, 30); //adding Start Population
     }
 
     public void AddParameter(params CultureParameter[] parameter)
@@ -125,6 +131,13 @@ public class Culture
         return !(a == b);
     }
 
+    public void AddLosses(float lossPercantage)
+    {
+        Variables.PopulationSize -= Mathf.RoundToInt((Variables.PopulationSize * lossPercantage) / Variables.TerritorySize);
+        Variables.Reputation -= Mathf.RoundToInt(((Variables.Reputation * lossPercantage) * 0.1f) / Variables.TerritorySize);//Reputation Weight Loss
+        Variables.Production -= Mathf.RoundToInt(((Variables.Production * lossPercantage) * 0.4f) / Variables.TerritorySize);//Prodcution Weight Loss
+    }
+
     private void UpdateVariables()
     {
         TileResources resources = new TileResources();
@@ -138,7 +151,7 @@ public class Culture
             resources.Goods += tile.Resources.Goods;
         }
         Variables.EscalationRate = GetParameterValue("Behaviour");
-        Variables.ReproductionRate = (1 - ((Variables.PopulationSize / Variables.TerritorySize) / CultureManager.MaxPopulationPerTile));
+        Variables.ReproductionRate = (1 - ((Variables.PopulationSize / Variables.TerritorySize) / CultureManager.MaxPopulationPerTile)) * (GetParameterValue("Sociology") * 2);
         Variables.InteractionRate = GetParameterValue("Communication");
 
         //resources now has the complete resources of this culture
@@ -148,7 +161,22 @@ public class Culture
             resources.Goods > Variables.PopulationSize / CultureManager.MaxPopulationPerGoods)
         {
             Variables.PopulationSize += Mathf.RoundToInt(Random.Range(0,15) * Variables.ReproductionRate);
-        }   
+        }
+
+        Variables.Production += Mathf.RoundToInt(resources.Production / Variables.PopulationSize);
+
+        if (Variables.PopulationSize <= 0)
+        {
+            if (OnPopulationEnd != null)
+                OnPopulationEnd.Invoke(this);
+        }
+
+        if (Variables.TerritorySize <= 0)
+        {
+            if (OnTerritoryEnd != null)
+                OnTerritoryEnd.Invoke(this);
+        }
+
     }
 
     /// <summary>
