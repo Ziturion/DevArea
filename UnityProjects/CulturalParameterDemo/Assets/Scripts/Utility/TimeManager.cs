@@ -4,8 +4,9 @@ using UnityEngine.UI;
 
 public class TimeManager : Singleton<TimeManager>
 {
-    public static event Action OnStartSimulation;
-    public static event Action OnStartSimulationLate;
+    public static event Action OnStartSimulationPreInit;
+    public static event Action OnStartSimulationInit;
+    public static event Action OnStartSimulationPostInit;
     public static event Action OnPauseSimulation;
     public static event Action OnForwardTimeSimulation;
     public static event Action OnNormalTimeSimulation;
@@ -21,8 +22,9 @@ public class TimeManager : Singleton<TimeManager>
 
     protected void OnDisable()
     {
-        OnStartSimulation = null;
-        OnStartSimulationLate = null;
+        OnStartSimulationPreInit = null;
+        OnStartSimulationInit = null;
+        OnStartSimulationPostInit = null;
         OnPauseSimulation = null;
         OnForwardTimeSimulation = null;
         OnNormalTimeSimulation = null;
@@ -46,13 +48,16 @@ public class TimeManager : Singleton<TimeManager>
     {
         if (!Started)
         {
-            if(OnStartSimulation != null)
-                OnStartSimulation.Invoke();
+            if(OnStartSimulationPreInit != null)
+                OnStartSimulationPreInit.Invoke();
             Started = true;
             Debug.Log("Starting Simulation...");
 
-            if (OnStartSimulationLate != null)
-                OnStartSimulationLate.Invoke();
+            if (OnStartSimulationInit != null)
+                OnStartSimulationInit.Invoke();
+
+            if (OnStartSimulationPostInit != null)
+                OnStartSimulationPostInit.Invoke();
         }
         else
         {

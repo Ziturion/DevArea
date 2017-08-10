@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class TileDebugger : MonoBehaviour
@@ -19,7 +17,7 @@ public class TileDebugger : MonoBehaviour
             //if the object is a tile
             if (tileObject != null)
             {
-                Tile tile = TerrainManager.Instance.GetTileByObject(tileObject);
+                Tile tile = TerrainManager.Instance.TileByObject(tileObject);
                 SetTexts(tile.Resources);
             }
         }

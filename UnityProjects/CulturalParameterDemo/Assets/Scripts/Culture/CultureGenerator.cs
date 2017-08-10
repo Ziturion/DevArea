@@ -10,7 +10,7 @@ public class CultureGenerator : Singleton<CultureGenerator>
 
     public CultureParameter[] ParameterPool;
     public Vector2 ParameterCount;
-    public CultureStats[] Cultures;
+    public CultureStats[] CultureStatsArray;
 
     public List<Culture> AllCultures { get; private set; }
     public float PointValue = 1.75f;
@@ -20,15 +20,15 @@ public class CultureGenerator : Singleton<CultureGenerator>
     protected void Awake()
     {
         AllCultures = new List<Culture>();
-        TimeManager.OnStartSimulation += GenerateCultures;
+        TimeManager.OnStartSimulationPreInit += GenerateCultures;
     }
 
     private void GenerateCultures()
     {
-        Debug.Log("Generating Cultures...");
-        foreach (CultureStats cStats in Cultures)
+        Debug.Log("Generating CultureStatsArray...");
+        foreach (CultureStats cStats in CultureStatsArray)
         {
-            AllCultures.Add(GenerateCulture(cStats, PointValue)); //TODO Generate per algorithm
+            AllCultures.Add(GenerateCulture(cStats, PointValue));
         }
         Debug.Log("Generating Culture UI...");
         GenerateUIs();
@@ -41,9 +41,6 @@ public class CultureGenerator : Singleton<CultureGenerator>
 
         for (int paramIndex = 0; paramIndex < Random.Range(ParameterCount.x, ParameterCount.y); paramIndex++)
         {
-            //for this example the paramIndex selects the corresponding Parameter in the pool for simplicity
-            //you could also make a random selection from the pool and delete duplicates
-            //TODO set Value
             parameters.Add(ParameterPool[paramIndex]);
             parameters[paramIndex].Value = Random.Range(0f, 1f);
         }

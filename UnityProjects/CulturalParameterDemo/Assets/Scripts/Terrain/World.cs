@@ -1,7 +1,11 @@
-﻿[System.Serializable]
+﻿using UnityEngine;
+
+[System.Serializable]
 public class World
 {
     public Tile[,] Map;
+
+    public Vector2 Size { get { return new Vector2(Map.GetLength(0),Map.GetLength(1));} }
 
     public World(float[,] noiseMap)
     {

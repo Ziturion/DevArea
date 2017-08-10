@@ -30,12 +30,16 @@ public class Tile
         Initialize(type,(int)position.x,(int)position.y,resources);
     }
 
-    public void Claim(Culture culture)
+    public bool Claim(Culture culture)
     {
+        if (OccupyingCulture != null)
+            return false;
+
         OccupyingCulture = culture;
 
-        if(OnTileClaimed != null)
+        if (OnTileClaimed != null)
             OnTileClaimed.Invoke();
+        return true;
     }
 
     /// <summary>

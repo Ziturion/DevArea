@@ -9,7 +9,7 @@ public class TerrainManager : Singleton<TerrainManager>
 
     protected void Awake()
     {
-        TimeManager.OnStartSimulationLate += GetWorldSetup;
+        TimeManager.OnStartSimulationInit += GetWorldSetup;
     }
 
     public void UpdateVisuals(Tile tile)
@@ -41,19 +41,19 @@ public class TerrainManager : Singleton<TerrainManager>
         return GetTileObject(tile.XPosition, tile.YPosition);
     }
 
-    public Tile GetTileByObject(int xPos, int yPos)
+    public Tile TileByObject(int xPos, int yPos)
     {
         return World[xPos, yPos];
     }
 
-    public Tile GetTileByObject(Vector2 position)
+    public Tile TileByObject(Vector2 position)
     {
-        return GetTileByObject((int)position.x, (int)position.y);
+        return TileByObject((int)position.x, (int)position.y);
     }
 
-    public Tile GetTileByObject(TileObject objectTile)
+    public Tile TileByObject(TileObject objectTile)
     {
-        return GetTileByObject(objectTile.XPos, objectTile.YPos);
+        return TileByObject(objectTile.XPos, objectTile.YPos);
     }
 
     /// <summary>
@@ -69,13 +69,51 @@ public class TerrainManager : Singleton<TerrainManager>
         {
             for (int y = 0; y < World.Map.GetLength(1); y++)
             {
-                if (World[x, y].IsOccupied)
+                if (World[x, y].IsOccupied && World[x,y].OccupyingCulture == culture)
                 {
                     tiles.Add(World[x,y]);
                 }
             }
         }
         return tiles.ToArray();
+    }
+
+    public Tile[] AdjacentTiles(Tile tile)
+    {
+        List<Tile> tiles = new List<Tile>();
+
+        if (tile.XPosition > 0)
+        {
+            tiles.Add(TileByObject(tile.XPosition - 1,tile.YPosition));
+        }
+        if (tile.XPosition < World.Size.x - 1)
+        {
+            tiles.Add(TileByObject(tile.XPosition + 1, tile.YPosition));
+        }
+        if (tile.YPosition > 0)
+        {
+            tiles.Add(TileByObject(tile.XPosition, tile.YPosition - 1));
+        }
+        if (tile.YPosition < World.Size.y - 1)
+        {
+            tiles.Add(TileByObject(tile.XPosition, tile.YPosition + 1));
+        }
+
+        return tiles.ToArray();
+    }
+
+    public Tile[] AdjacentCultureTiles(Culture culture)
+    {
+        Tile[] territory = GetTerritory(culture);
+        List<Tile> adjacentTiles = new List<Tile>();
+
+        //adding all neighbours for all
+        foreach (Tile tile in territory)
+        {
+            adjacentTiles.AddRange(AdjacentTiles(tile).Where(t => t.OccupyingCulture != culture));
+        }
+
+        return adjacentTiles.ToArray();
     }
 
     /// <summary>

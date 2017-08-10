@@ -32,7 +32,7 @@ public class TerrainGenerator : Singleton<TerrainGenerator>
 
     protected void Awake()
 	{
-	    TimeManager.OnStartSimulation += GenerateTerrain;
+	    TimeManager.OnStartSimulationPreInit += GenerateTerrain;
 	}
 
     //Error Management
