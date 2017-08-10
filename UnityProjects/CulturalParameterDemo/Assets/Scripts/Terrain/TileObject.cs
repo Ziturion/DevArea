@@ -26,4 +26,9 @@ public class TileObject : MonoBehaviour
         HighlightSprite.enabled = occupied;
         HighlightSprite.color = color;
     }
+
+    public Color CurrentHighlightColor()
+    {
+        return HighlightSprite.color;
+    }
 }

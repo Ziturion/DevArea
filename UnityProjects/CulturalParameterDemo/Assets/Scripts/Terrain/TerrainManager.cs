@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -19,6 +20,25 @@ public class TerrainManager : Singleton<TerrainManager>
             obj.UpdateHighlight(true,tile.OccupyingCulture.CultureColor);
         else
             obj.UpdateHighlight(false, Color.white);
+    }
+
+    public void TileFlickering(Tile tile, Color color)
+    {
+        TileObject obj = GetTileObject(tile);
+        Color currentColor = obj.CurrentHighlightColor();
+        StartCoroutine(FlickeringHighlight(obj, currentColor, color, tile.OccupyingCulture != null,0.2f));
+    }
+
+    private IEnumerator FlickeringHighlight(TileObject obj, Color baseColor, Color flickerColor, bool occupied = true, float interval = 0.1f)
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            obj.UpdateHighlight(occupied, flickerColor);
+            yield return new WaitForSeconds(interval);
+            obj.UpdateHighlight(occupied, baseColor);
+            yield return new WaitForSeconds(interval);
+        }
+        obj.UpdateHighlight(occupied, baseColor);
     }
 
     /// <summary>

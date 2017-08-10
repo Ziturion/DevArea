@@ -40,6 +40,9 @@ public class DebugManager : Singleton<DebugManager>
     {
         if (!TimeManager.Started)
             return;
+        if (CultureManager.Instance.Cultures.Length <= index)
+            return;
+
         CultureDebuggerObject.GetComponent<CultureDebugger>().SetCulture(CultureManager.Instance.Cultures[index]);
     }
 

@@ -35,7 +35,7 @@ public class Culture
                 new BT_Selector("Communication", new BT_Trade("Trade"), new BT_Reputation("Reputation: Communication", CultureType.Communication), new BT_Claim("Claim: Communication", CultureType.Communication))),
             new BT_WeightedSelector.WeightedPair(
                 GetParameterValue("Economics"),
-                new BT_Selector("Economics", new BT_Claim("Claim: Economics", CultureType.Economics), new BT_Reputation("Reputation: Economics", CultureType.Economics))),
+                new BT_Selector("Economics",  new BT_Reputation("Reputation: Economics", CultureType.Economics), new BT_Claim("Claim: Economics", CultureType.Economics))),
             new BT_WeightedSelector.WeightedPair(
                 GetParameterValue("Sociology"),
                 new BT_Selector("Sociology", new BT_Reputation("Reputation: Sociology", CultureType.Sociology))));
@@ -103,7 +103,6 @@ public class Culture
 
     public void Update()
     {
-        //TODO more variables
         BT_Culture.Run();
         UpdateVariables();
     }
@@ -129,6 +128,30 @@ public class Culture
     public static bool operator !=(Culture a, Culture b)
     {
         return !(a == b);
+    }
+
+    protected bool Equals(Culture other)
+    {
+        return string.Equals(Name, other.Name) && CultureColor.Equals(other.CultureColor) && StartPosition.Equals(other.StartPosition);
+    }
+
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != this.GetType()) return false;
+        return Equals((Culture)obj);
+    }
+
+    public override int GetHashCode()
+    {
+        unchecked
+        {
+            var hashCode = (Name != null ? Name.GetHashCode() : 0);
+            hashCode = (hashCode * 397) ^ CultureColor.GetHashCode();
+            hashCode = (hashCode * 397) ^ StartPosition.GetHashCode();
+            return hashCode;
+        }
     }
 
     public void AddLosses(float lossPercantage)
@@ -175,6 +198,11 @@ public class Culture
         {
             if (OnTerritoryEnd != null)
                 OnTerritoryEnd.Invoke(this);
+        }
+
+        if (Variables.ReproductionRate <= -10f)
+        {
+            Variables.PopulationSize -= Random.Range(60, 100);
         }
 
     }

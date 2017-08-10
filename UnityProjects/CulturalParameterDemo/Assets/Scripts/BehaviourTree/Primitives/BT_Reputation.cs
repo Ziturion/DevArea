@@ -39,7 +39,15 @@ namespace Ziturion.BehaviourTree
                     culture.Variables.Production += Random.Range(10, 25);
                     break;
                 case CultureType.Sociology:
-                    culture.Variables.PopulationSize += Mathf.RoundToInt(Random.Range(culture.Variables.PopulationSize * 0.01f, culture.Variables.PopulationSize * 0.09f));
+                    if (Random.Range(0f, 1f) < 0.8f)
+                    {
+                        culture.Variables.PopulationSize += Random.Range(15, 50); //small buff
+                    }
+                    else
+                    {
+                        culture.Variables.PopulationSize += Random.Range(150, 700); // big buff
+                    }
+
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

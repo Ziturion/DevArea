@@ -81,7 +81,7 @@ public class CultureManager : Singleton<CultureManager>
         float attackingBehaviourValue = attackingCulture.GetParameterValue("Behaviour");
 
         //if the reputation of defender is too high (but the attacker has a small chance to attack nevertheless
-        if (defender.Variables.Reputation > attackingCulture.Variables.Reputation && (Random.Range(0f, 1f) < 1.8f - attackingBehaviourValue))
+        if (defender.Variables.Reputation > attackingCulture.Variables.Reputation && (Random.Range(0f, 1f) < 0.9f - attackingBehaviourValue))
             return false;
 
         float attackArmy = attackingCulture.Variables.PopulationSize * attackingBehaviourValue;
@@ -107,11 +107,13 @@ public class CultureManager : Singleton<CultureManager>
                 break;
             case 3:
                 //Lose
+                TerrainManager.Instance.TileFlickering(defendingTile,Color.black);
                 attackingPercentageLoss = Random.Range(0.06f, 0.15f);
                 defendingPercantageLoss = Random.Range(0.06f, 0.1f);
                 break;
             case 4:
                 //CritLose
+                TerrainManager.Instance.TileFlickering(defendingTile, Color.white);
                 attackingPercentageLoss = Random.Range(0.2f, 0.25f);
                 defendingPercantageLoss = Random.Range(0.04f, 0.08f);
                 break;
@@ -122,6 +124,16 @@ public class CultureManager : Singleton<CultureManager>
         defender.AddLosses(defendingPercantageLoss);
 
         return true;
+    }
+
+    public Culture RandomCulture(params Culture[] blacklist)
+    {
+        if (blacklist == null)
+            return null;
+
+        List<Culture> possibleCultures = Cultures.Where(culture => !blacklist.Contains(culture)).ToList();
+
+        return possibleCultures.Count > 0 ? possibleCultures[Random.Range(0, possibleCultures.Count)] : null;
     }
 
     private static void ForcedClaimTile(Tile tile, Culture claimingCulture)
@@ -171,14 +183,20 @@ public class CultureManager : Singleton<CultureManager>
             ForcedClaimTile(tile,null);
         }
 
-        Debug.Log("Killed: " + culture);
+        //Debug.Log("Killed: " + culture);
 
         List<Culture> newCultures = new List<Culture>();
         newCultures.AddRange(Cultures);
+        List<CultureUI> newCultureUis = new List<CultureUI>();
+        newCultureUis.AddRange(CultureUis);
 
-        CultureUis[newCultures.IndexOf(culture)].SetInactive();
-
+        int index = newCultures.IndexOf(culture);
+        CultureUis[index].SetInactive();
+        
+        newCultureUis.RemoveAt(index);
         newCultures.Remove(culture);
+
+        CultureUis = newCultureUis.ToArray();
         Cultures = newCultures.ToArray();
     }
 

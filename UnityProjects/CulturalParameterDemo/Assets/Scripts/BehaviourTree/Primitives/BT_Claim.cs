@@ -19,6 +19,9 @@ namespace Ziturion.BehaviourTree
             if(selectedTile == null)
                 return BT_Callback.False;
 
+            if (Random.Range(0f, 1f) < 0.5f)
+                return BT_Callback.False; //TODO maybe Redo cause unnecessary Randomness
+
             return CultureManager.Instance.ClaimTile(selectedTile, info.CultureInfo) ? BT_Callback.True : BT_Callback.False;
         }
 
